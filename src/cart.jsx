@@ -2,40 +2,32 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import CartCard from "./cartcard";
 
-function Cart({ Products }) {
-  const [Productsarray, SetProductsArray] = useState(Products);
+function Cart({state,dispatch}) {
+
+// console.log(state);
 
 
-  const [total,Settotal] =  useState(0)
+    const[total,Settotal] = useState(0)
+  let sum = 0;
 
-
-  const calculateTotal = () => {
-    let newTotal = 0;
-    for (let i = 0; i < Productsarray.length; i++) {
-      if (Productsarray[i].quantity > 0) {
-        newTotal += Productsarray[i].quantity * Productsarray[i].price;
-      }
-    }
-    Settotal(newTotal);
-  };
-
-
-  useEffect(() => {
-    calculateTotal(); 
-    SetProductsArray(Products);
+  useEffect(()=>{
     
-  }, [Products,total]);
-
-
+    state.map((ele)=>{
+      sum += ele.quantity * ele.price;
+    })
+    Settotal(sum)
+  
+  },[state])
+ 
   return (
     <>
       <div className="cartDiv">
         <div className="addeditem">
-          {Productsarray.map((ele) => {
+          {state.map((ele) => {
             if(ele.quantity >0){
                 return(
                     <>
-            <div className="addedproducts">
+            <div className="addedproducts" key={ele.id}>
             <section>{ele.name}</section>
             <section className="multiplicationDiv">
               <span>{ele.quantity}</span>
